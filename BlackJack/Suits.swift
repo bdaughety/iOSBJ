@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+enum Suits: String {
+    case Spades, Clubs, Diamonds, Hearts
+}

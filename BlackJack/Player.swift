@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+class Player {
+    var hands: [Hand]
+    var bank: Double
+    
+    init() {
+        hands = [Hand]()
+        bank = Double.init()
+    }
+}
