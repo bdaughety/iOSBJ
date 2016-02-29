@@ -62,8 +62,6 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         deck = deckBuilder.initDeck
         
-//        dealButton.setTitleTextAttributes([NSFontAttributeName : UIFont(name: "Helvetica-Bold", size: 26)!, NSForegroundColorAttributeName : UIColor.blackColor()], forState: UIControlState.Selected)
-        
         dealButton.enabled = false
         hitButton.enabled = false
         standButton.enabled = false
@@ -89,10 +87,6 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
-        
-    }
-    
     func textFieldDidEndEditing(textField: UITextField) {
         let bet = textField.text
         dealButton.enabled = isBetValid(bet)
@@ -106,102 +100,10 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     // MARK: Actions
     @IBAction func dealCards(sender: AnyObject) {
         clearCardImages()
-        player.hands.removeAll()
-        dealerHand = Hand()
-        
-        dealButton.titleTextAttributesForState(UIControlState.Normal)
-        dealButton.enabled = false
-        hitButton.enabled = true
-        standButton.enabled = true
-        splitButton.enabled = false
-        doubleDownButton.enabled = true
-        
-        currentPlayerHandIndex = 0
-        playerNextCardPosition = 0.0
-        dealerOutcomeLabel.text = EMPTY_TEXT
-        playerOutcomeLabel.text = EMPTY_TEXT
-        
-        if player.hands.count > 0 {
-            player.hands = [Hand]()
-        }
-        
-        if deck.count < MINIMUM_DECK_SIZE {
-            deckBuilder = DeckBuilder(numberOfDecks: nil) // default number of decks = 7
-            deck = deckBuilder.initDeck
-        }
-        
-        let playerHand = Hand()
-        
-        playerHand.bet = Double(betTextField.text!)!
-        player.bank -= playerHand.bet
-        betTextField.enabled = false
-        
-        var currentCard = deck.popLast() as! Card
-//        var currentCard = deckBuilder.findCardByImageName(CardsEnum.Queen_of_Clubs.rawValue)!
-        playerHand.hit(currentCard)
-        playerFirstCard.image = currentCard.image
-        playerScoreLabel.text = String(playerHand.determineFinalScore())
-        
-        currentCard = deck.popLast() as! Card
-//        currentCard = deckBuilder.findCardByImageName(CardsEnum.Two_of_Clubs.rawValue)!
-        dealerHand.hit(currentCard)
-        dealerFirstCard.image = currentCard.image
-        dealerScoreLabel.text = String(dealerHand.determineFinalScore())
-        
-        currentCard = deck.popLast() as! Card
-//        currentCard = deckBuilder.findCardByImageName(CardsEnum.Ace_of_Diamonds.rawValue)!
-        playerHand.hit(currentCard)
-        playerSecondCard.image = currentCard.image
-        playerScoreLabel.text = String(playerHand.determineFinalScore())
-        
-        currentCard = deck.popLast() as! Card
-//        currentCard = deckBuilder.findCardByImageName(CardsEnum.Three_of_Spades.rawValue)!
-        dealerHand.hit(currentCard)
-        dealerSecondCard.image = backOfCardImage
-        
-        player.hands.append(playerHand)
-        doubleDownButton.enabled = isDoubleDownEnabled()
-        
-        if playerHand.hasBlackJack() {
-            dealerScoreLabel.text = String(dealerHand.determineFinalScore())
-            dealerSecondCard.image = dealerHand.cards[1].image
-            
-            hitButton.enabled = false
-            standButton.enabled = false
-            dealButton.enabled = true
-            doubleDownButton.enabled = false
-            splitButton.enabled = false
-            dealButton.titleTextAttributesForState(UIControlState.Selected)
-            
-            // TODO: add insurance
-            if dealerHand.hasBlackJack() {
-                dealerOutcomeLabel.text = PUSH
-                playerOutcomeLabel.text = PUSH
-                player.bank += playerHand.bet
-            } else {
-                dealerOutcomeLabel.text = LOSE
-                playerOutcomeLabel.text = WIN
-                player.bank += round(playerHand.bet * 2.5)
-            }
-            betTextField.enabled = true
-        } else if dealerHand.hasBlackJack() {
-            // TODO: add insurance
-            dealerScoreLabel.text = String(dealerHand.determineFinalScore())
-            dealerSecondCard.image = dealerHand.cards[1].image
-            
-            hitButton.enabled = false
-            standButton.enabled = false
-            dealButton.enabled = true
-            doubleDownButton.enabled = false
-            splitButton.enabled = false
-            dealButton.titleTextAttributesForState(UIControlState.Selected)
-            
-            dealerOutcomeLabel.text = WIN
-            playerOutcomeLabel.text = LOSE
-            betTextField.enabled = true
-        }
-        
-        balanceTextField.text = "$" + String(player.bank)
+        setEnableButtonsForDeal()
+        setupHands()
+        dealCardsAndProcessBlackjacks()
+        updatePlayerBankTextField()
     }
 
     @IBAction func hitPlayer(sender: AnyObject) {
@@ -214,13 +116,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         if player.hands.count > 1 {
             currentPlayerHandIndex += 1
         }
-        hitButton.enabled = false
-        standButton.enabled = false
-        dealButton.enabled = true
-        doubleDownButton.enabled = false
-        splitButton.enabled = false
-        dealButton.titleTextAttributesForState(UIControlState.Selected)
-        
+        setEnableButtonsForPlayerStand()
         processDealerTurn()
     }
     
@@ -382,6 +278,123 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         }
         
         return false
+    }
+    
+    func setEnableButtonsForDeal() {
+        dealButton.enabled = false
+        hitButton.enabled = true
+        standButton.enabled = true
+        splitButton.enabled = false
+        doubleDownButton.enabled = true
+    }
+    
+    func setEnableButtonsForPlayerStand() {
+        hitButton.enabled = false
+        standButton.enabled = false
+        dealButton.enabled = true
+        doubleDownButton.enabled = false
+        splitButton.enabled = false
+    }
+    
+    func setupHands() {
+        player.hands.removeAll()
+        dealerHand = Hand()
+        
+        currentPlayerHandIndex = 0
+        playerNextCardPosition = 0.0
+        dealerOutcomeLabel.text = EMPTY_TEXT
+        playerOutcomeLabel.text = EMPTY_TEXT
+        
+        if deck.count < MINIMUM_DECK_SIZE {
+            deckBuilder = DeckBuilder(numberOfDecks: nil) // default number of decks = 7
+            deck = deckBuilder.initDeck
+        }
+    }
+    
+    func dealCardsAndProcessBlackjacks() {
+        let playerHand = Hand()
+        
+        playerHand.bet = Double(betTextField.text!)!
+        player.bank -= playerHand.bet
+        betTextField.enabled = false
+        
+        var currentCard = deck.popLast() as! Card
+        //        var currentCard = deckBuilder.findCardByImageName(CardsEnum.Queen_of_Clubs.rawValue)!
+        playerHand.hit(currentCard)
+        animateCardBeingDealt(playerFirstCard, cardImage: currentCard.image!, delay: 0.0)
+        playerScoreLabel.text = String(playerHand.determineFinalScore())
+        
+        currentCard = deck.popLast() as! Card
+        //        currentCard = deckBuilder.findCardByImageName(CardsEnum.Two_of_Clubs.rawValue)!
+        dealerHand.hit(currentCard)
+        animateCardBeingDealt(dealerFirstCard, cardImage: currentCard.image!, delay: 0.5)
+        dealerScoreLabel.text = String(dealerHand.determineFinalScore())
+        
+        currentCard = deck.popLast() as! Card
+        //        currentCard = deckBuilder.findCardByImageName(CardsEnum.Ace_of_Diamonds.rawValue)!
+        playerHand.hit(currentCard)
+        animateCardBeingDealt(playerSecondCard, cardImage: currentCard.image!, delay: 1.0)
+        playerScoreLabel.text = String(playerHand.determineFinalScore())
+        
+        currentCard = deck.popLast() as! Card
+        //        currentCard = deckBuilder.findCardByImageName(CardsEnum.Three_of_Spades.rawValue)!
+        dealerHand.hit(currentCard)
+        animateCardBeingDealt(dealerSecondCard, cardImage: backOfCardImage!, delay: 1.5)
+        
+        player.hands.append(playerHand)
+        doubleDownButton.enabled = isDoubleDownEnabled()
+        
+        if playerHand.hasBlackJack() {
+            dealerScoreLabel.text = String(dealerHand.determineFinalScore())
+            dealerSecondCard.image = dealerHand.cards[1].image
+            
+            hitButton.enabled = false
+            standButton.enabled = false
+            dealButton.enabled = true
+            doubleDownButton.enabled = false
+            splitButton.enabled = false
+            dealButton.titleTextAttributesForState(UIControlState.Selected)
+            
+            // TODO: add insurance
+            if dealerHand.hasBlackJack() {
+                dealerOutcomeLabel.text = PUSH
+                playerOutcomeLabel.text = PUSH
+                player.bank += playerHand.bet
+            } else {
+                dealerOutcomeLabel.text = LOSE
+                playerOutcomeLabel.text = WIN
+                player.bank += round(playerHand.bet * 2.5)
+            }
+            betTextField.enabled = true
+        } else if dealerHand.hasBlackJack() {
+            // TODO: add insurance
+            dealerScoreLabel.text = String(dealerHand.determineFinalScore())
+            dealerSecondCard.image = dealerHand.cards[1].image
+            
+            hitButton.enabled = false
+            standButton.enabled = false
+            dealButton.enabled = true
+            doubleDownButton.enabled = false
+            splitButton.enabled = false
+            dealButton.titleTextAttributesForState(UIControlState.Selected)
+            
+            dealerOutcomeLabel.text = WIN
+            playerOutcomeLabel.text = LOSE
+            betTextField.enabled = true
+        }
+    }
+    
+    func updatePlayerBankTextField() {
+        balanceTextField.text = "$" + String(player.bank)
+    }
+    
+    func animateCardBeingDealt(image: UIImageView, cardImage: UIImage, delay: Double) {
+        image.center.x += view.bounds.width
+        image.image = cardImage
+        
+        UIView.animateWithDuration(0.5, delay: delay, options: [], animations: {
+            image.center.x -= self.view.bounds.width
+        }, completion: nil)
     }
     
     /*

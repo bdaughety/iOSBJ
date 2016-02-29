@@ -52,7 +52,7 @@
         <!--Black Jack-->
         <scene sceneID="NZD-to-AV9">
             <objects>
-                <viewController id="ft6-vq-4VC" customClass="BlackJackViewController" customModule="BlackJack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BlackJackVC" id="ft6-vq-4VC" customClass="BlackJackViewController" customModule="BlackJack" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="JaU-hL-trr"/>
                         <viewControllerLayoutGuide type="bottom" id="jLP-K5-6sj"/>

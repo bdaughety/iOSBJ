@@ -40,20 +40,9 @@ class Hand {
     }
     
     func determineBusted() {
-        if hasAce() {
-            if self.score >= 31 {
-                stand()
-                if self.score > 31 {
-                    self.busted = true
-                }
-            } else if self.score == 21 {
-                stand()
-            }
-        } else if self.score >= 21 {
+        if determineFinalScore() > 21 {
             stand()
-            if self.score > 21 {
-                self.busted = true
-            }
+            self.busted = true
         }
     }
     
