@@ -24,6 +24,7 @@ class BlackJackTests: XCTestCase {
         
         viewController.viewDidLoad()
         viewController.betTextField.text = "100.00"
+        buildMinimumTestDeck()
     }
 
     override func tearDown() {
@@ -31,65 +32,11 @@ class BlackJackTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testMultipleAcesInOneHand() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let deckBuilder = viewController.deckBuilder
-        
-        viewController.deck = [AnyObject]()
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
-        viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
         viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Ace_of_Hearts.rawValue)!)
         viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Ace_of_Hearts.rawValue)!)
         viewController.deck.append(deckBuilder.findCardByImageName(CardsEnum.Ten_of_Diamonds.rawValue)!)
@@ -102,6 +49,28 @@ class BlackJackTests: XCTestCase {
         
         assert(viewController.dealerOutcomeLabel.text == "Win")
         assert(viewController.playerOutcomeLabel.text == "Lose")
+    }
+    
+    func testPlayerAutoStandOnTwentyOne() {
+        viewController.deck.append(viewController.deckBuilder.findCardByImageName(CardsEnum.Five_of_Clubs.rawValue)!)
+        viewController.deck.append(viewController.deckBuilder.findCardByImageName(CardsEnum.Ten_of_Diamonds.rawValue)!)
+        viewController.deck.append(viewController.deckBuilder.findCardByImageName(CardsEnum.Five_of_Clubs.rawValue)!)
+        viewController.deck.append(viewController.deckBuilder.findCardByImageName(CardsEnum.Seven_of_Clubs.rawValue)!)
+        viewController.deck.append(viewController.deckBuilder.findCardByImageName(CardsEnum.Ace_of_Hearts.rawValue)!)
+        
+        viewController.dealCards(UIBarButtonItem())
+        viewController.hitPlayer(UIBarButtonItem())
+        
+        assert(viewController.player.hands[0].standing)
+        assert(viewController.dealerOutcomeLabel.text == "Lose")
+        assert(viewController.playerOutcomeLabel.text == "Win")
+    }
+    
+    func buildMinimumTestDeck() {
+        viewController.deck = [AnyObject]()
+        for _ in 0..<26 {
+            viewController.deck.append(viewController.deckBuilder.findCardByImageName(CardsEnum.Two_of_Diamonds.rawValue)!)
+        }
     }
     
     func testPerformanceExample() {

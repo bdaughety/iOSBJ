@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BlackJack/BlackJackViewController.swift"
-            timestampString = "476767584.024667"
+            timestampString = "478900769.626817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "BlackJackViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BlackJack/BlackJackViewController.swift"
-            timestampString = "478384024.702091"
+            timestampString = "478900769.626817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "hitPlayerAndUpdateUI(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BlackJack/BlackJackViewController.swift"
-            timestampString = "478384024.702091"
+            timestampString = "478900769.626817"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "262"
-            endingLineNumber = "262"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "updateOutcomeLabelTextsPlayerNotBusted(_:)"
             landmarkType = "5">
          </BreakpointContent>

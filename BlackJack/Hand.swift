@@ -37,6 +37,9 @@ class Hand {
         }
         
         determineBusted()
+        if determineFinalScore() == 21 {
+            stand()
+        }
     }
     
     func determineBusted() {
