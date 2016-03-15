@@ -18,21 +18,19 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var dealerFirstCard: UIImageView!
     @IBOutlet weak var dealerSecondCard: UIImageView!
     @IBOutlet weak var dealerScoreLabel: UILabel!
-    @IBOutlet weak var dealButton: UIBarButtonItem!
-    @IBOutlet weak var hitButton: UIBarButtonItem!
-    @IBOutlet weak var standButton: UIBarButtonItem!
+    @IBOutlet weak var dealButton: UIButton!
+    @IBOutlet weak var hitButton: UIButton!
+    @IBOutlet weak var standButton: UIButton!
     @IBOutlet weak var dealerOutcomeLabel: UILabel!
     @IBOutlet weak var playerOutcomeLabel: UILabel!
     @IBOutlet weak var gameTableView: UIView!
-    @IBOutlet weak var playerHandView: UIView!
-    @IBOutlet weak var dealerHandView: UIView!
     @IBOutlet weak var balanceTextField: UITextField!
-    @IBOutlet weak var doubleDownButton: UIBarButtonItem!
-    @IBOutlet weak var splitButton: UIBarButtonItem!
-    @IBOutlet weak var betTextField: UITextField!
+    @IBOutlet weak var doubleDownButton: UIButton!
+    @IBOutlet weak var splitButton: UIButton!
+    @IBOutlet weak var betLabel: UILabel!
     
     // MARK: Constants
-    final let NEXT_CARD_SPACING: CGFloat = 32
+    final let NEXT_CARD_SPACING: CGFloat = 16
     final let TWENTY_ONE_WITH_ACE: Int = 31
     final let BLACK_JACK: Int = 21
     final let MINIMUM_DECK_SIZE: Int = 26
@@ -54,22 +52,20 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     var dealerButtonTitleAttributesNormal: [String : AnyObject] = ["" : ""]
     var dealerButtonTitleAttributesSelected: [String : AnyObject] = ["" : ""]
     var deckBuilder: DeckBuilder = DeckBuilder(numberOfDecks: nil) // default number of decks = 7
+    var tempDealButton: UIButton = UIButton()
     
     // MARK: Load and warnings
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        betTextField.delegate = self
-
         // Do any additional setup after loading the view.
         deck = deckBuilder.initDeck
         
-        dealButton.enabled = false
+        dealButton.enabled = true
         hitButton.enabled = false
         standButton.enabled = false
         doubleDownButton.enabled = false
         splitButton.enabled = false
-        betTextField.enabled = true
         balanceTextField.enabled = false
         
         if player.bank <= MINIMUM_BET {
@@ -80,23 +76,6 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    // MARK: UITextFieldDelegate
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        // Hide the keyboard.
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        let bet = textField.text
-        dealButton.enabled = isBetValid(bet)
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
     }
     
     // MARK: Actions
@@ -126,7 +105,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         let currentBet = player.hands[currentPlayerHandIndex].bet
         updatePlayerNextCardPosition()
         hitPlayerAndUpdateUI(true)
-        betTextField.text = String(currentBet)
+        betLabel.text = String(currentBet)
     }
     
     @IBAction func split(sender: AnyObject) {
@@ -137,25 +116,54 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     // MARK: Supporting Actions
     
     func updatePlayerHandsForSplit() {
-        let currentHand = player.hands[currentPlayerHandIndex]
-        let newSplitHand = Hand()
-        
-        newSplitHand.hit(currentHand.cards.popLast()!)
-        currentHand.hit(deck.popLast() as! Card)
-        newSplitHand.hit(deck.popLast() as! Card)
+//        let currentHand = player.hands[currentPlayerHandIndex]
+//        let newSplitHand = Hand()
+//        
+//        newSplitHand.hit(currentHand.cards.popLast()!)
+//        currentHand.hit(deck.popLast() as! Card)
+//        newSplitHand.hit(deck.popLast() as! Card)
     }
     
     func updateUIForSplit() {
-        let currentHandView = UIView()
-        let newSplitHandView = UIView()
-        let currentHandFirstCardImageView = UIImageView()
-        let currentHandSecondCardImageView = UIImageView()
-        let newSplitHandFirstCardImageView = UIImageView()
-        let newSplitHandSecondCardImageView = UIImageView()
-        
-        currentHandView
-        
-        gameTableView.addSubview(newSplitHandView)
+//        let currentHandView = UIView()
+//        let newSplitHandView = UIView()
+//        
+//        
+//        // Get the superview's layout
+//        let margins = gameTableView.layoutMarginsGuide
+//        
+//        // Pin the leading edge of myView to the margin's leading edge
+//        currentHandView.leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor).active = true
+//        
+//        // Pin the trailing edge of myView to the margin's trailing edge
+//        currentHandView.trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor).active = true
+//        
+//        // Give myView a 1:2 aspect ratio
+//        currentHandView.heightAnchor.constraintEqualToAnchor(currentHandView.widthAnchor, multiplier: 2.0)
+//        
+//        var leftAlignConstraint = NSLayoutConstraint()
+//        leftAlignConstraint.active = true
+//        print(currentHandView.constraints)
+//        
+//        
+//        
+//        let currentHandFirstCardImageView = UIImageView()
+//        let currentHandSecondCardImageView = UIImageView()
+//        let newSplitHandFirstCardImageView = UIImageView()
+//        let newSplitHandSecondCardImageView = UIImageView()
+//        
+//        currentHandFirstCardImageView.image = player.hands[currentPlayerHandIndex].cards[0].image
+//        currentHandSecondCardImageView.image = player.hands[currentPlayerHandIndex].cards[1].image
+//        newSplitHandFirstCardImageView.image = player.hands[currentPlayerHandIndex + 1].cards[0].image
+//        newSplitHandSecondCardImageView.image = player.hands[currentPlayerHandIndex + 1].cards[1].image
+//        
+//        currentHandView.addSubview(currentHandFirstCardImageView)
+//        currentHandView.addSubview(currentHandSecondCardImageView)
+//        newSplitHandView.addSubview(newSplitHandFirstCardImageView)
+//        newSplitHandView.addSubview(newSplitHandSecondCardImageView)
+//        
+//        gameTableView.addSubview(newSplitHandView)
+//        gameTableView.addSubview(currentHandView)
     }
     
     func isDoubleDownEnabled() -> Bool {
@@ -179,27 +187,22 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
             player.bank -= playerHand.bet
             balanceTextField.text = "$" + String(player.bank)
             playerHand.doubleDown(hitCard)
-            betTextField.text = String(playerHand.bet)
+            betLabel.text = String(playerHand.bet)
         } else {
             playerHand.hit(hitCard)
         }
         hitCardImageView.image = hitCard.image
-        hitCardImageView.frame = playerFirstCard.frame.offsetBy(dx: playerNextCardPosition, dy: 0)
+        hitCardImageView.frame = playerFirstCard.frame.offsetBy(dx: playerNextCardPosition, dy: playerNextCardPosition * -1)
         allCardImages.append(hitCardImageView)
         
         hitCardImageView.startAnimating()
-        playerHandView.addSubview(hitCardImageView)
+        gameTableView.addSubview(hitCardImageView)
         hitCardImageView.stopAnimating()
         
         playerScoreLabel.text = String(playerHand.determineFinalScore())
         
         if playerHand.busted || playerHand.standing {
-            hitButton.enabled = false
-            standButton.enabled = false
-            dealButton.enabled = true
-            doubleDownButton.enabled = false
-            splitButton.enabled = false
-            dealButton.titleTextAttributesForState(UIControlState.Selected)
+            setEnableButtonsForPlayerStand()
             
             dealerScoreLabel.text = String(dealerHand.determineFinalScore())
             dealerSecondCard.image = dealerHand.cards[1].image
@@ -210,7 +213,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
             } else if playerHand.determineFinalScore() == BLACK_JACK || doubleDown {
                 processDealerTurn()
             }
-            betTextField.enabled = true
+            betLabel.enabled = true
         }
     }
     
@@ -227,7 +230,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     }
     
     func isBetValid(bet: String?) -> Bool {
-        if let currentBet: Double = Double(betTextField.text!)! {
+        if let currentBet: Double = Double(betLabel.text!)! {
             return currentBet >= MINIMUM_BET
         }
         return false
@@ -252,7 +255,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
             hitCardImageView.frame = dealerFirstCard.frame.offsetBy(dx: dealerNextCardPosition, dy: 0)
             allCardImages.append(hitCardImageView)
             
-            dealerHandView.addSubview(hitCardImageView)
+            gameTableView.addSubview(hitCardImageView)
             
             dealerScoreLabel.text = String(dealerHand.determineFinalScore())
         }
@@ -291,7 +294,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
                 player.bank += playerHand.bet
             }
         }
-        betTextField.enabled = true
+        betLabel.enabled = true
     }
     
     func isDealerStanding(dealerHand: Hand) -> Bool {
@@ -306,6 +309,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     }
     
     func setEnableButtonsForDeal() {
+        dealButton.hidden = true
         dealButton.enabled = false
         hitButton.enabled = true
         standButton.enabled = true
@@ -316,6 +320,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     func setEnableButtonsForPlayerStand() {
         hitButton.enabled = false
         standButton.enabled = false
+        dealButton.hidden = false
         dealButton.enabled = true
         doubleDownButton.enabled = false
         splitButton.enabled = false
@@ -341,9 +346,9 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     func dealCardsAndProcessBlackjacks() {
         let playerHand = Hand()
         
-        playerHand.bet = Double(betTextField.text!)!
+        playerHand.bet = Double(betLabel.text!)!
         player.bank -= playerHand.bet
-        betTextField.enabled = false
+        betLabel.enabled = false
         
         var currentCard = deck.popLast() as! Card
         playerHand.hit(currentCard)
@@ -369,12 +374,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
             dealerScoreLabel.text = String(dealerHand.determineFinalScore())
             dealerSecondCard.image = dealerHand.cards[1].image
             
-            hitButton.enabled = false
-            standButton.enabled = false
-            dealButton.enabled = true
-            doubleDownButton.enabled = false
-            splitButton.enabled = false
-            dealButton.titleTextAttributesForState(UIControlState.Selected)
+            setEnableButtonsForPlayerStand()
             
             // TODO: add insurance
             if dealerHand.hasBlackJack() {
@@ -386,22 +386,19 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
                 playerOutcomeLabel.text = WIN
                 player.bank += round(playerHand.bet * 2.5)
             }
-            betTextField.enabled = true
+            betLabel.enabled = true
         } else if dealerHand.hasBlackJack() {
             // TODO: add insurance
             dealerScoreLabel.text = String(dealerHand.determineFinalScore())
             dealerSecondCard.image = dealerHand.cards[1].image
             
-            hitButton.enabled = false
-            standButton.enabled = false
-            dealButton.enabled = true
-            doubleDownButton.enabled = false
-            splitButton.enabled = false
-            dealButton.titleTextAttributesForState(UIControlState.Selected)
+            setEnableButtonsForPlayerStand()
             
             dealerOutcomeLabel.text = WIN
             playerOutcomeLabel.text = LOSE
-            betTextField.enabled = true
+            betLabel.enabled = true
+        } else if playerHand.cards[0].score == playerHand.cards[1].score {
+            splitButton.enabled = true
         }
     }
     
@@ -409,16 +406,16 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         balanceTextField.text = "$" + String(player.bank)
     }
     
-    func animateCardBeingDealt(image: UIImageView, cardImage: UIImage, delay: Double) {
-        image.center.x += view.bounds.width
-        image.image = cardImage
+    func animateCardBeingDealt(card: UIImageView, cardImage: UIImage, delay: Double) {
+        card.center.x += view.bounds.width
+        card.image = cardImage
         
         UIView.animateWithDuration(
             0.5,
             delay: delay,
             options: [],
             animations: {
-                image.center.x -= self.view.bounds.width
+                card.center.x -= self.view.bounds.width
             },
             completion: {
                 (value: Bool) in
