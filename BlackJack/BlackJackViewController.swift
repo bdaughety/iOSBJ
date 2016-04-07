@@ -53,6 +53,10 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     var dealerButtonTitleAttributesSelected: [String : AnyObject] = ["" : ""]
     var deckBuilder: DeckBuilder = DeckBuilder(numberOfDecks: nil) // default number of decks = 7
     var tempDealButton: UIButton = UIButton()
+    let splitHandOneFirstCardImageView = UIImageView()
+    let splitHandOneSecondCardImageView = UIImageView()
+    let splitHandTwoFirstCardImageView = UIImageView()
+    let splitHandTwoSecondCardImageView = UIImageView()
     
     // MARK: Load and warnings
     override func viewDidLoad() {
@@ -94,11 +98,13 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func standPlayer(sender: AnyObject) {
         player.hands[currentPlayerHandIndex].stand()
-        if player.hands.count > 1 {
+        if currentPlayerHandIndex + 1 != player.hands.count {
             currentPlayerHandIndex += 1
+            playerNextCardPosition = 0
+        } else {
+            setEnableButtonsForPlayerStand()
+            processDealerTurn()
         }
-        setEnableButtonsForPlayerStand()
-        processDealerTurn()
     }
     
     @IBAction func doubleDown(sender: AnyObject) {
@@ -116,54 +122,41 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     // MARK: Supporting Actions
     
     func updatePlayerHandsForSplit() {
-//        let currentHand = player.hands[currentPlayerHandIndex]
-//        let newSplitHand = Hand()
-//        
-//        newSplitHand.hit(currentHand.cards.popLast()!)
-//        currentHand.hit(deck.popLast() as! Card)
-//        newSplitHand.hit(deck.popLast() as! Card)
+        let currentHand = player.hands[currentPlayerHandIndex]
+        let newSplitHand = Hand()
+        
+        newSplitHand.hit(currentHand.cards.popLast()!)
+        currentHand.hit(deck.popLast() as! Card)
+        newSplitHand.hit(deck.popLast() as! Card)
+        
+        player.hands.append(newSplitHand)
     }
     
     func updateUIForSplit() {
-//        let currentHandView = UIView()
-//        let newSplitHandView = UIView()
-//        
-//        
-//        // Get the superview's layout
-//        let margins = gameTableView.layoutMarginsGuide
-//        
-//        // Pin the leading edge of myView to the margin's leading edge
-//        currentHandView.leadingAnchor.constraintEqualToAnchor(margins.leadingAnchor).active = true
-//        
-//        // Pin the trailing edge of myView to the margin's trailing edge
-//        currentHandView.trailingAnchor.constraintEqualToAnchor(margins.trailingAnchor).active = true
-//        
-//        // Give myView a 1:2 aspect ratio
-//        currentHandView.heightAnchor.constraintEqualToAnchor(currentHandView.widthAnchor, multiplier: 2.0)
-//        
-//        var leftAlignConstraint = NSLayoutConstraint()
-//        leftAlignConstraint.active = true
-//        print(currentHandView.constraints)
-//        
-//        
-//        
-//        let currentHandFirstCardImageView = UIImageView()
-//        let currentHandSecondCardImageView = UIImageView()
-//        let newSplitHandFirstCardImageView = UIImageView()
-//        let newSplitHandSecondCardImageView = UIImageView()
-//        
-//        currentHandFirstCardImageView.image = player.hands[currentPlayerHandIndex].cards[0].image
-//        currentHandSecondCardImageView.image = player.hands[currentPlayerHandIndex].cards[1].image
-//        newSplitHandFirstCardImageView.image = player.hands[currentPlayerHandIndex + 1].cards[0].image
-//        newSplitHandSecondCardImageView.image = player.hands[currentPlayerHandIndex + 1].cards[1].image
-//        
-//        currentHandView.addSubview(currentHandFirstCardImageView)
-//        currentHandView.addSubview(currentHandSecondCardImageView)
-//        newSplitHandView.addSubview(newSplitHandFirstCardImageView)
-//        newSplitHandView.addSubview(newSplitHandSecondCardImageView)
-//        
-//        gameTableView.addSubview(newSplitHandView)
-//        gameTableView.addSubview(currentHandView)
+        splitHandOneFirstCardImageView.image = player.hands[currentPlayerHandIndex].cards[0].image
+        splitHandOneSecondCardImageView.image = player.hands[currentPlayerHandIndex].cards[1].image
+        splitHandOneFirstCardImageView.frame = playerFirstCard.frame.offsetBy(dx: -50, dy: 0)
+        splitHandOneSecondCardImageView.frame = playerSecondCard.frame.offsetBy(dx: -50, dy: 0)
+        
+        splitHandTwoFirstCardImageView.image = player.hands[currentPlayerHandIndex + 1].cards[0].image
+        splitHandTwoSecondCardImageView.image = player.hands[currentPlayerHandIndex + 1].cards[1].image
+        splitHandTwoFirstCardImageView.frame = playerFirstCard.frame.offsetBy(dx: 50, dy: 0)
+        splitHandTwoSecondCardImageView.frame = playerSecondCard.frame.offsetBy(dx: 50, dy: 0)
+        
+        allCardImages.append(splitHandOneFirstCardImageView)
+        allCardImages.append(splitHandOneSecondCardImageView)
+        allCardImages.append(splitHandTwoFirstCardImageView)
+        allCardImages.append(splitHandTwoSecondCardImageView)
+        
+        gameTableView.addSubview(splitHandOneFirstCardImageView)
+        gameTableView.addSubview(splitHandOneSecondCardImageView)
+        gameTableView.addSubview(splitHandTwoFirstCardImageView)
+        gameTableView.addSubview(splitHandTwoSecondCardImageView)
+        
+        // TODO: animate cards for split
+        
+        playerFirstCard.image = nil
+        playerSecondCard.image = nil
     }
     
     func isDoubleDownEnabled() -> Bool {
@@ -172,6 +165,10 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
             return false
         }
         return true
+    }
+    
+    func playerHasSplit() -> Bool {
+        return player.hands.count > 1
     }
     
     func updatePlayerNextCardPosition() {
@@ -191,13 +188,20 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         } else {
             playerHand.hit(hitCard)
         }
-        hitCardImageView.image = hitCard.image
-        hitCardImageView.frame = playerFirstCard.frame.offsetBy(dx: playerNextCardPosition, dy: playerNextCardPosition * -1)
+        
+        if playerHasSplit() {
+            if currentPlayerHandIndex == 0 {
+                hitCardImageView.frame = splitHandOneFirstCardImageView.frame.offsetBy(dx: playerNextCardPosition, dy: playerNextCardPosition * -1)
+            } else if currentPlayerHandIndex == 1 {
+                hitCardImageView.frame = splitHandTwoFirstCardImageView.frame.offsetBy(dx: playerNextCardPosition, dy: playerNextCardPosition * -1)
+            }
+        } else {
+            hitCardImageView.frame = playerFirstCard.frame.offsetBy(dx: playerNextCardPosition, dy: playerNextCardPosition * -1)
+        }
         allCardImages.append(hitCardImageView)
         
-        hitCardImageView.startAnimating()
         gameTableView.addSubview(hitCardImageView)
-        hitCardImageView.stopAnimating()
+        animateCardBeingDealt(hitCardImageView, cardImage: hitCard.image!, delay: 0.0)
         
         playerScoreLabel.text = String(playerHand.determineFinalScore())
         
@@ -240,6 +244,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         dealerSecondCard.image = dealerHand.cards[1].image
         dealerScoreLabel.text = String(dealerHand.determineFinalScore())
         dealerNextCardPosition = 0.0
+        var dealerHitCards: [UIImageView] = []
         
         while !isDealerStanding(dealerHand) {
             if dealerNextCardPosition.isZero {
@@ -251,13 +256,23 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
             let hitCard = deck.popLast() as! Card
             
             dealerHand.hit(hitCard)
-            hitCardImageView.image = hitCard.image
             hitCardImageView.frame = dealerFirstCard.frame.offsetBy(dx: dealerNextCardPosition, dy: 0)
             allCardImages.append(hitCardImageView)
+            dealerHitCards.append(hitCardImageView)
             
             gameTableView.addSubview(hitCardImageView)
             
             dealerScoreLabel.text = String(dealerHand.determineFinalScore())
+        }
+        
+        var delay = 0.0
+        var index = 2
+        if (dealerHitCards.count > 0) {
+            for hitCardImageView in dealerHitCards {
+                animateCardBeingDealt(hitCardImageView, cardImage: dealerHand.cards[index].image!, delay: delay)
+                delay += 0.5
+                index += 1
+            }
         }
         
         // TODO: add label for multiple player hands
@@ -297,6 +312,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         betLabel.enabled = true
     }
     
+    // TODO: add this to dealer object
     func isDealerStanding(dealerHand: Hand) -> Bool {
         let dealerScore = dealerHand.determineFinalScore()
         
@@ -349,6 +365,10 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         playerHand.bet = Double(betLabel.text!)!
         player.bank -= playerHand.bet
         betLabel.enabled = false
+        
+        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Clubs.rawValue)!)
+        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Hearts.rawValue)!)
+        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Spades.rawValue)!)
         
         var currentCard = deck.popLast() as! Card
         playerHand.hit(currentCard)

@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BlackJack/BlackJackViewController.swift"
-            timestampString = "479694929.457426"
+            timestampString = "481687012.931224"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "hitPlayerAndUpdateUI(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BlackJack/BlackJackViewController.swift"
-            timestampString = "479699712.013495"
+            timestampString = "481687012.931224"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "275"
-            endingLineNumber = "275"
-            landmarkName = "updateOutcomeLabelTextsPlayerNotBusted(_:)"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
+            landmarkName = "processDealerTurn()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -96,6 +96,22 @@
             startingLineNumber = "21"
             endingLineNumber = "21"
             landmarkName = "setUp()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BlackJack/BlackJackViewController.swift"
+            timestampString = "481687086.998688"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
+            landmarkName = "updateUIForSplit()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

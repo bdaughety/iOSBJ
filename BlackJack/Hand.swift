@@ -32,7 +32,7 @@ class Hand {
             self.cards.append(cardHitting)
             self.score += card.score
             if card.name.containsString("Ace") {
-                self.aceCount++
+                self.aceCount += 1
             }
         }
         
