@@ -426,9 +426,9 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         player.bank -= playerHand.bet
         betLabel.enabled = false
         
-        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Clubs.rawValue)!)
-        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Hearts.rawValue)!)
-        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Spades.rawValue)!)
+//        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Clubs.rawValue)!)
+//        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Hearts.rawValue)!)
+//        deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Spades.rawValue)!)
         
         var delay = 0.0
         if (animateClearCards) {
