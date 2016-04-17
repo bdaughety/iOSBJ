@@ -87,4 +87,18 @@ class Hand {
         stand()
         hit(card)
     }
+    
+    func getLastCardForSplit() -> Card {
+        let card = cards.popLast()!
+        updateScore()
+        return card
+    }
+    
+    func updateScore() {
+        var updatedScore = 0
+        for card in cards {
+            updatedScore += card.score
+        }
+        score = updatedScore
+    }
 }

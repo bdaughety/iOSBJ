@@ -82,13 +82,15 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    var animateClearCards = false
+    
     // MARK: Actions
     @IBAction func dealCards(sender: AnyObject) {
-        clearCardImages()
         setEnableButtonsForDeal()
         setupHands()
         dealCardsAndProcessBlackjacks()
         updatePlayerBankTextField()
+//        clearCardImages()
     }
 
     @IBAction func hitPlayer(sender: AnyObject) {
@@ -122,11 +124,10 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     // MARK: Supporting Actions
     
     func updatePlayerHandsForSplit() {
-        let currentHand = player.hands[currentPlayerHandIndex]
         let newSplitHand = Hand()
         
-        newSplitHand.hit(currentHand.cards.popLast()!)
-        currentHand.hit(deck.popLast() as! Card)
+        newSplitHand.hit(player.hands[currentPlayerHandIndex].getLastCardForSplit())
+        player.hands[currentPlayerHandIndex].hit(deck.popLast() as! Card)
         newSplitHand.hit(deck.popLast() as! Card)
         
         player.hands.append(newSplitHand)
@@ -154,9 +155,30 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         gameTableView.addSubview(splitHandTwoSecondCardImageView)
         
         // TODO: animate cards for split
+        animateCardForSplit(splitHandOneFirstCardImageView, cardFrom: playerFirstCard, delay: 0)
+        animateCardForSplit(splitHandTwoFirstCardImageView, cardFrom: playerSecondCard, delay: 0.5)
+        animateCardBeingDealt(splitHandOneSecondCardImageView, cardImage: splitHandOneSecondCardImageView.image!, delay: 1)
+        animateCardBeingDealt(splitHandTwoSecondCardImageView, cardImage: splitHandTwoSecondCardImageView.image!, delay: 1.5)
         
         playerFirstCard.image = nil
         playerSecondCard.image = nil
+    }
+    
+    func animateCardForSplit(card: UIImageView, cardFrom: UIImageView, delay: Double) {
+        let centerX = card.center.x
+        let centerY = card.center.y
+        card.center.x = cardFrom.center.x
+        card.center.y = cardFrom.center.y
+        
+        UIView.animateWithDuration(
+            0.5,
+            delay: delay,
+            options: [],
+            animations: {
+                card.center.x = centerX
+                card.center.y = centerY
+            },
+            completion: nil)
     }
     
     func isDoubleDownEnabled() -> Bool {
@@ -206,31 +228,43 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         playerScoreLabel.text = String(playerHand.determineFinalScore())
         
         if playerHand.busted || playerHand.standing {
-            setEnableButtonsForPlayerStand()
-            
-            dealerScoreLabel.text = String(dealerHand.determineFinalScore())
-            dealerSecondCard.image = dealerHand.cards[1].image
-            
-            if playerHand.busted {
-                dealerOutcomeLabel.text = WIN
-                playerOutcomeLabel.text = LOSE
-            } else if playerHand.determineFinalScore() == BLACK_JACK || doubleDown {
-                processDealerTurn()
+            if currentPlayerHandIndex + 1 != player.hands.count {
+                currentPlayerHandIndex += 1
+                playerNextCardPosition = 0
+            } else {
+                setEnableButtonsForPlayerStand()
+                
+                dealerScoreLabel.text = String(dealerHand.determineFinalScore())
+                dealerSecondCard.image = dealerHand.cards[1].image
+                
+                if playerHand.busted {
+                    dealerOutcomeLabel.text = WIN
+                    playerOutcomeLabel.text = LOSE
+                } else if playerHand.determineFinalScore() == BLACK_JACK || doubleDown {
+                    processDealerTurn()
+                }
+                betLabel.enabled = true
             }
-            betLabel.enabled = true
         }
     }
-    
+
     func clearCardImages() {
-        allCardImages.append(playerFirstCard)
-        allCardImages.append(dealerFirstCard)
-        allCardImages.append(playerSecondCard)
-        allCardImages.append(dealerSecondCard)
-        
         for imageView in allCardImages {
-            imageView.image = nil
+            imageView.removeFromSuperview()
         }
+        
         allCardImages.removeAll()
+    }
+    
+    func animateCardsForClear(card: UIImageView) {
+        UIView.animateWithDuration(
+            0.5,
+            delay: 0,
+            options: [],
+            animations: {
+                card.center.y -= self.view.bounds.height
+            },
+            completion: nil)
     }
     
     func isBetValid(bet: String?) -> Bool {
@@ -360,6 +394,32 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
     }
     
     func dealCardsAndProcessBlackjacks() {
+        if animateClearCards {
+            let tempPlayerFirstCard = UIImageView()
+            tempPlayerFirstCard.image = playerFirstCard.image
+            tempPlayerFirstCard.frame = playerFirstCard.frame
+            let tempDealerFirstCard = UIImageView()
+            tempDealerFirstCard.image = dealerFirstCard.image
+            tempDealerFirstCard.frame = dealerFirstCard.frame
+            let tempPlayerSecondCard = UIImageView()
+            tempPlayerSecondCard.image = playerSecondCard.image
+            tempPlayerSecondCard.frame = playerSecondCard.frame
+            let tempDealerSecondCard = UIImageView()
+            tempDealerSecondCard.image = dealerSecondCard.image
+            tempDealerSecondCard.frame = dealerSecondCard.frame
+            allCardImages.append(tempPlayerFirstCard)
+            allCardImages.append(tempDealerFirstCard)
+            allCardImages.append(tempPlayerSecondCard)
+            allCardImages.append(tempDealerSecondCard)
+            gameTableView.addSubview(tempPlayerFirstCard)
+            gameTableView.addSubview(tempDealerFirstCard)
+            gameTableView.addSubview(tempPlayerSecondCard)
+            gameTableView.addSubview(tempDealerSecondCard)
+            for imageView in allCardImages {
+                animateCardsForClear(imageView)
+            }
+        }
+        
         let playerHand = Hand()
         
         playerHand.bet = Double(betLabel.text!)!
@@ -370,22 +430,30 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Hearts.rawValue)!)
         deck.append(deckBuilder.findCardByImageName(CardsEnum.Seven_of_Spades.rawValue)!)
         
+        var delay = 0.0
+        if (animateClearCards) {
+            delay += 0.5
+        }
         var currentCard = deck.popLast() as! Card
         playerHand.hit(currentCard)
-        animateCardBeingDealt(playerFirstCard, cardImage: currentCard.image!, delay: 0.0)
+        animateCardBeingDealt(playerFirstCard, cardImage: currentCard.image!, delay: delay)
+        delay += 0.5
         
         currentCard = deck.popLast() as! Card
         dealerHand.hit(currentCard)
-        animateCardBeingDealt(dealerFirstCard, cardImage: currentCard.image!, delay: 0.5)
+        animateCardBeingDealt(dealerFirstCard, cardImage: currentCard.image!, delay: delay)
+        delay += 0.5
         dealerScoreLabel.text = String(dealerHand.determineFinalScore())
         
         currentCard = deck.popLast() as! Card
         playerHand.hit(currentCard)
-        animateCardBeingDealt(playerSecondCard, cardImage: currentCard.image!, delay: 1.0)
+        animateCardBeingDealt(playerSecondCard, cardImage: currentCard.image!, delay: delay)
+        delay += 0.5
         
         currentCard = deck.popLast() as! Card
         dealerHand.hit(currentCard)
-        animateCardBeingDealt(dealerSecondCard, cardImage: backOfCardImage!, delay: 1.5)
+        animateCardBeingDealt(dealerSecondCard, cardImage: backOfCardImage!, delay: delay)
+        delay += 0.5
         
         player.hands.append(playerHand)
         doubleDownButton.enabled = isDoubleDownEnabled()
@@ -420,14 +488,17 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
         } else if playerHand.cards[0].score == playerHand.cards[1].score {
             splitButton.enabled = true
         }
+        animateClearCards = true
     }
     
     func updatePlayerBankTextField() {
         balanceTextField.text = "$" + String(player.bank)
     }
     
+    // TODO: adjust layering of cards; also the layering of the curved line
     func animateCardBeingDealt(card: UIImageView, cardImage: UIImage, delay: Double) {
         card.center.x += view.bounds.width
+        card.center.y -= view.bounds.height
         card.image = cardImage
         
         UIView.animateWithDuration(
@@ -436,6 +507,7 @@ class BlackJackViewController: UIViewController, UITextFieldDelegate {
             options: [],
             animations: {
                 card.center.x -= self.view.bounds.width
+                card.center.y += self.view.bounds.height
             },
             completion: {
                 (value: Bool) in
