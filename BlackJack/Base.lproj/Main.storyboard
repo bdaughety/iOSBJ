@@ -88,6 +88,9 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W05-2h-7DR">
                                 <rect key="frame" x="1" y="106" width="599" height="450"/>
                                 <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Curve" translatesAutoresizingMaskIntoConstraints="NO" id="Q0Y-V1-ZdM">
+                                        <rect key="frame" x="0.0" y="0.0" width="598" height="450"/>
+                                    </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FUO-xq-VgL" userLabel="Dealer First Card">
                                         <rect key="frame" x="268" y="8" width="63" height="88"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -282,9 +285,6 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Curve" translatesAutoresizingMaskIntoConstraints="NO" id="Q0Y-V1-ZdM">
-                                        <rect key="frame" x="0.0" y="0.0" width="598" height="450"/>
-                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.47748004441744851" green="0.86353577488687783" blue="0.059084046447148666" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
