@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="PLp-uB-9zn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="PLp-uB-9zn">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -204,23 +204,6 @@
                                             <action selector="doubleDown:" destination="ft6-vq-4VC" eventType="touchUpInside" id="zGJ-jx-gnR"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="DealButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EoN-LS-UqN">
-                                        <rect key="frame" x="254" y="154" width="91" height="44"/>
-                                        <color key="backgroundColor" red="0.34567307692307692" green="0.34567307692307692" blue="0.34567307692307692" alpha="0.25" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="91" id="Weg-lI-8qb"/>
-                                        </constraints>
-                                        <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
-                                        <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="27"/>
-                                        <size key="titleShadowOffset" width="4" height="1"/>
-                                        <state key="normal" title="DEAL">
-                                            <color key="titleColor" red="0.21712888300288929" green="0.21911095518261031" blue="0.79910422120418845" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" red="0.084222978665043705" green="0.06200871412069342" blue="0.41661894633507857" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="dealCards:" destination="ft6-vq-4VC" eventType="touchUpInside" id="YYy-IT-oum"/>
-                                        </connections>
-                                    </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7cd-Jg-gR3">
                                         <rect key="frame" x="218" y="105" width="42" height="0.0"/>
                                         <constraints>
@@ -285,6 +268,23 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="DealButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EoN-LS-UqN">
+                                        <rect key="frame" x="254" y="154" width="91" height="44"/>
+                                        <color key="backgroundColor" red="0.34567307692307692" green="0.34567307692307692" blue="0.34567307692307692" alpha="0.25" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="91" id="Weg-lI-8qb"/>
+                                        </constraints>
+                                        <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                        <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="27"/>
+                                        <size key="titleShadowOffset" width="4" height="1"/>
+                                        <state key="normal" title="DEAL">
+                                            <color key="titleColor" red="0.21712888300288929" green="0.21911095518261031" blue="0.79910422120418845" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" red="0.084222978665043705" green="0.06200871412069342" blue="0.41661894633507857" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="dealCards:" destination="ft6-vq-4VC" eventType="touchUpInside" id="YYy-IT-oum"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.47748004441744851" green="0.86353577488687783" blue="0.059084046447148666" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
