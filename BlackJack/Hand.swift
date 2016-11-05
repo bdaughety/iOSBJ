@@ -27,11 +27,11 @@ class Hand {
         self.bet = 0
     }
     
-    func hit(card: Card) {
+    func hit(_ card: Card) {
         if let cardHitting: Card = card {
             self.cards.append(cardHitting)
             self.score += card.score
-            if card.name.containsString("Ace") {
+            if card.name.contains("Ace") {
                 self.aceCount += 1
             }
         }
@@ -51,7 +51,7 @@ class Hand {
     
     func hasAce() -> Bool {
         for card in self.cards {
-            if card.name.containsString("Ace") {
+            if card.name.contains("Ace") {
                 return true
             }
         }
@@ -82,7 +82,7 @@ class Hand {
         return finalScore
     }
     
-    func doubleDown(card: Card) {
+    func doubleDown(_ card: Card) {
         bet += bet
         stand()
         hit(card)

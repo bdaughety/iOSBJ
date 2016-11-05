@@ -23,7 +23,7 @@ class DeckBuilder {
         }
     }
     
-    private func createAndShuffleDeck(numberOfDecks: Int?) -> [AnyObject] {
+    fileprivate func createAndShuffleDeck(_ numberOfDecks: Int?) -> [AnyObject] {
         var finalNumber: Int = defaultNumberOfDecks
         
         if numberOfDecks != nil {
@@ -59,10 +59,10 @@ class DeckBuilder {
             }
         }
         
-        return GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(deck)
+        return GKRandomSource.sharedRandom().arrayByShufflingObjects(in: deck) as [AnyObject]
     }
     
-    func getScoreByIndex(index: Int) -> Int {
+    func getScoreByIndex(_ index: Int) -> Int {
         var score: Int
         switch index {
         case 0 : score = 11
@@ -72,7 +72,7 @@ class DeckBuilder {
         return score
     }
     
-    func findCardByPosition(position: Int) -> Card? {
+    func findCardByPosition(_ position: Int) -> Card? {
         if singleDeck.count > 0 {
             for card in singleDeck {
                 let currentCard = card as! Card
@@ -84,7 +84,7 @@ class DeckBuilder {
         return nil
     }
     
-    func findCardByImageName(imageName: String) -> Card? {
+    func findCardByImageName(_ imageName: String) -> Card? {
         if singleDeck.count > 0 {
             for card in singleDeck {
                 let currentCard = card as! Card

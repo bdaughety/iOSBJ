@@ -18,12 +18,12 @@ class BlackJackTests: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        viewController = storyboard.instantiateViewControllerWithIdentifier("BlackJackVC") as! BlackJackViewController
+        viewController = storyboard.instantiateViewController(withIdentifier: "BlackJackVC") as! BlackJackViewController
         
         _ = viewController.view // force loading subviews and setting outlets
         
         viewController.viewDidLoad()
-        viewController.betTextField.text = "100.00"
+//        viewController.betTextField.text = "100.00"
         buildMinimumTestDeck()
     }
 
@@ -75,7 +75,7 @@ class BlackJackTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
